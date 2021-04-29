@@ -1,9 +1,11 @@
-PROJ_NAME = Activity1
+PROJ_NAME = Activity
 
 BUILD_DIR = build
 
 # All Source code files
 SRC = main.c\
+./src/Activity1.c\
+./src/Activity2.c\
 
 
 # All header file paths
@@ -34,6 +36,8 @@ endif
 all:$(BUILD_DIR)
 # Compile the code and generate the ELF file
 	$(CC) -g -Wall -Os -mmcu=atmega328  $(SRC) -o $(call FixPath,$(BUILD_DIR)/$(PROJ_NAME).elf)
+	$(AVR_OBJ_CPY) -O ihex $(call FixPath,$(BUILD_DIR)/$(PROJ_NAME).elf) $(call FixPath,$(BUILD_DIR)/$(PROJ_NAME).hex)
+	rm $(call FixPath,$(BUILD_DIR)/$(PROJ_NAME).elf)
 
 $(BUILD_DIR):
 # Create directory to store the built files
