@@ -1,7 +1,7 @@
 
 /**
- * @file Activity_1.h
- * @author Yash Trivedi (you@domain.com)
+ * @file Activity1.h
+ * @author Yash Trivedi (https://github.com/259844/Embedded-C)
  * @brief 
  * @version 0.1
  * @date 2021-04-27
@@ -9,12 +9,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef _Activity1_h_
+#define _Activity1_h_
 
-
-
-
-#ifndef _port_init_h_
-#define _port_init_h_
-
-void port_init(void);
+void Activity1(void);
 #endif
