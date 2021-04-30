@@ -1,17 +1,45 @@
-#ifndef _Activity2_h_
-#define _Activity2_h_
-
+#ifndef __ACTIVITY_2_H__
+#define __ACTIVITY_2_H__
 /**
- * @brief Initializes ADC Channels and its Registers
+ * @file activity2.h
+ * @author KaaviyaP (kaaviya2881999@gmail.com)
+ * @brief Header file for activity2
+ * @version 0.1
+ * @date 2021-04-27
+ * 
+ * @copyright Copyright (c) 2021
  * 
  */
-void ADC_init();
 
 /**
- * @brief Activity-2 To take data from temperature sensor through ADC channel
- * 
- * @return int 
- */
-int Activity2(char);
+ * Include files
+ */ 
+#include <util/delay.h>
+#include <avr/io.h>
 
-#endif
+/**
+ * Function Definitions
+ */
+
+/**
+ * @brief Initialize the registers for ADC setup
+ * 
+ */
+void InitADC();
+
+/**
+ * @brief Gives the ADC values for the selected channel
+ * 
+ * @param[in] ch Channel number from 0-7
+ * @return uint16_t ADC value
+ */
+uint16_t ReadADC(uint8_t ch);
+
+/**
+ * @brief Return the ADC value to main function
+ * 
+ * @return uint16_t The ADC value
+ */
+uint16_t activity2_GetADC(void);
+
+#endif /* __ACTIVITY_2_H__ */
