@@ -1,44 +1,30 @@
-/**
- * @file port_init.c
- * @author Yash Trivedi (https://github.com/259844/Embedded-C)
- * @brief 
- * @version 0.1
- * @date 2021-04-27
- * 
- * @copyright Copyright (c) 2021
- * 
- */
-#include "activity1.h"
+#include<avr/io.h>
+#include"Activity1.h"
+#include <util/delay.h>
 
 
-void peripheral_init(void)
-{	
-	DDRD |= (1<<PD2); // set PD2=1 for LED
-    DDRD &= ~(1<<PD0); //clear bit
-    PORTD |= (1<<PD0); //set bit PD0 for SeatSwitch
-    DDRD &= ~(1<<PD1); //clear bit
-    PORTD |= (1<<PD1); //set bit PD0 for HeaterSwitch
-}
-
-void TurnLED_ON(){
-    LED_PORT |= (1<<LED_PIN); 
-}
-
-void TurnLED_OFF(){
-    LED_PORT &= ~(1<<LED_PIN);
-}
-
-int act1=0;
-int activity1_LED(void)
+int Activity1(void)
 {
-       peripheral_init();
-        if(!(PIND&(1<<BUTTON_SENSOR )) && !(PIND&(1<<TEMP_SENSOR))) //both the switches are pressed
-        { 
-            act1=1;
-        }
-        else  //in all other cases
+    DDRB |= (1<<PB1);       //output pin to led
+    DDRB &= ~(1<<PB0);    //input pin to seat button(clear bit)
+    DDRB &= ~(1<<PB2);    //input pin to heater(clear bit)
+
+
+    PORTB |= (1<<PB0);    //set bit
+    PORTB |= (1<<PB2);    //set bit
+
+    while(1)
+    {
+
+        if((!(PINB&(1<<PB0)))&(!(PINB&(1<<PB2))))
         {
-            act1=0;
+            PORTB |= (1<<PB1);      //Turn On Led
         }
-    return act1;
+
+         else
+        {
+            PORTB &= ~(1<<PB1);     //Turn Off Led
+        }
+    }
+    return 0;
 }
