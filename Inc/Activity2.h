@@ -1,15 +1,6 @@
 #ifndef __ACTIVITY_2_H__
 #define __ACTIVITY_2_H__
-/**
- * @file activity2.h
- * @author KaaviyaP (kaaviya2881999@gmail.com)
- * @brief Header file for activity2
- * @version 0.1
- * @date 2021-04-27
- * 
- * @copyright Copyright (c) 2021
- * 
- */
+
 
 /**
  * Include files
