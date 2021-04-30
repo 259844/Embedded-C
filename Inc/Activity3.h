@@ -10,16 +10,7 @@
  */
 #ifndef __ACTIVITY_3_H__
 #define __ACTIVITY_3_H__
-/**
- * @file activity3.h
- * @author KaaviyaP (kaaviya2881999@gmail.com)
- * @brief Header file for activity3
- * @version 0.1
- * @date 2021-04-27
- * 
- * @copyright Copyright (c) 2021
- * 
- */
+
 
 /**
  * Macro Definitions
