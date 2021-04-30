@@ -8,50 +8,38 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include<avr/io.h>
-#include"../inc/Activity3.h"
+#include "activity3.h"
+#include "activity2.h"
 
-/**
- * @brief Initializes Timer0(8-bit)
- * 
- */
-void Timer_init()
+void InitTimer()
 {
-    DDRD |= (1 << DDD6);         // PD6 is now an output
-
-    TCCR0A |= (1 << COM0A1);    // set none-inverting mode
-
-    TCCR0A |= (1 << WGM01) | (1 << WGM00);  // set fast PWM Mode
-
-    TCCR0B |= (1 << CS01);    // set prescaler to 8 and starts PWM
+    TCCR1A |= (1<<COM1A1)|(1<<WGM11)|(1<<WGM10);
+    TCCR1B |= (1<<WGM12)|(1<<CS11)|(1<<CS10);
+    DDRB |=(1<<PB1);
 }
 
-/**
- * @brief Activity-3 To generate PWM according to the data sensed by the ADC channel
- * 
- * @param adc_val 
- */
-void Activity3(int adc_val)
-{   
-    Timer_init();
+void activity3_PWM(uint16_t temp)
+{
+    InitTimer();
+    if(temp>=0 && temp<=200){
+            OCR1A = PWM_20_PERCENT;
+            _delay_ms(200);
+        }
+        else if(temp>=210 && temp<=500){
+             OCR1A = PWM_40_PERCENT;
+            _delay_ms(200);
+        }
+        else if(temp>=510 && temp<=700){
+             OCR1A = PWM_70_PERCENT;
+            _delay_ms(200);
+        }
+        else if(temp>=710 && temp<=1024){
+             OCR1A = PWM_95_PERCENT;
+            _delay_ms(200);
+        }
+        else{
+            OCR1A=0;
+            _delay_ms(200);
+        }
 
-    if((adc_val>=0)&(adc_val<=200))
-    {
-        OCR0A = 51;
-    }
-
-    else if((adc_val>=210)&(adc_val<=500))
-    {
-        OCR0A = 128;
-    }
-
-    else if((adc_val>=510)&(adc_val<=700))
-    {
-        OCR0A = 179;
-    }
-
-    else if((adc_val>=710)&(adc_val<=1024))
-    {
-        OCR0A = 243;
-    }
 }
