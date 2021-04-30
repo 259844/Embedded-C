@@ -8,43 +8,32 @@
  * @copyright Copyright (c) 2021
  * 
  */
-/**
- * @file main.c
- * @author DhyeyaPatel (https://github.com/DhyeyaPatel/Embedded-C.git)
- * @brief 
- * @version 0.1
- * @date 2021-04-23
- * 
- * @copyright Copyright (c) 2021
- * 
- */
-#include "activity1.h"
-#include "activity2.h"
-#include "activity3.h"
-#include "activity4.h"
+#include <avr/io.h>
+#include <util/delay.h>
+
 
 int main(void)
 {
-    uint16_t temp;
-    
+    DDRB |= (1<<PB1);       //output pin to led
+    DDRB &= ~(1<<PB0);    //input pin to seat button(clear bit)
+    DDRB &= ~(1<<PB2);    //input pin to heater(clear bit)
+
+
+    PORTB |= (1<<PB0);    //set bit
+    PORTB |= (1<<PB2);    //set bit
+
     while(1)
     {
-        if(activity1_LED()==1) //Check if both the switches are pressed
-        {
-           
-            TurnLED_ON();//Turn LED ON
-            temp=activity2_GetADC(); //Get the ADC value
-            activity3_PWM(temp); //PWM output based on temperature
-		    activity4_USARTWrite(temp); //To Serial monitor to print Temperature
-            
 
-        }
-        else  //in all other cases
+        if((!(PINB&(1<<PB0)))&(!(PINB&(1<<PB2))))
         {
-            TurnLED_OFF();//Turn LED OFF
-		    _delay_ms(200);
+            PORTB |= (1<<PB1);      //Turn On Led
         }
 
+         else
+        {
+            PORTB &= ~(1<<PB1);     //Turn Off Led
+        }
     }
     return 0;
 }
