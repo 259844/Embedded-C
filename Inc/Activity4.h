@@ -8,25 +8,44 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#ifndef _Activity4_h_
-#define _Activity4_h_
+#ifndef __ACTIVITY_4_H__
+#define __ACTIVITY_4_H__
 
 /**
- * @brief Initializes UART protocol parameters
- * 
+ * Macro Definitions
  */
-void UART_init(int);
+#define F_CPU 16000000UL /**< Clock Frequency of MCU is 16 MHz */
+#define USART_BAUDRATE 9600 /**< Baud rate for serial communication  */
+#define UBRR_VALUE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1) /**< Formula to calculate UBRR value */
 
 /**
- * @brief Write function to send the temperature from micro-controller to external
- * 
- */
-void UART_WRITE(int);
+ * Include files
+ */ 
+#include <util/delay.h>
+#include <avr/io.h>
 
 /**
- * @brief Activity-4 To send temperature according to the data sensed by ADC and generated PWM
+ * Function Definitions
+ */
+
+/**
+ * @brief Setting Baud rate and Enabling Rx and Tx 
  * 
  */
-void Activity4(int);
+void USARTInit();
 
-#endif
+/**
+ * @brief Reading data
+ * 
+ * @return int The read data
+ */
+int USARTRead();
+
+/**
+ * @brief Writing data to view in serial monitor
+ * 
+ * @param[in] temp The ADC value
+ */
+void activity4_USARTWrite(uint16_t temp);
+
+#endif /* __ACTIVITY_4_H__ */
