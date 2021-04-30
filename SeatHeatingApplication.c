@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file SeatHeatingApp.c
  * @author Yash Trivedi (https://github.com/259844/Embedded-C)
  * @brief 
  * @version 0.1
@@ -18,34 +18,33 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include <avr/io.h>
-
-#include"./inc/Activity1.h"
-#include"./inc/Activity2.h"
-#include"./inc/Activity3.h"
-#include"./inc/Activity4.h"
-
-#define LED_ON  PORTD |= (1<<PD3)
-#define LED_OFF PORTD &= ~(1<<PD3)
+#include "activity1.h"
+#include "activity2.h"
+#include "activity3.h"
+#include "activity4.h"
 
 int main(void)
 {
-    uint16_t value = 0;
+    uint16_t temp;
     
-	while(1)
-    {   
-        Activity1();
-
-        if ((!(PIND & (1<<PD2))) & (!(PIND & (1<<PD4))))    //LED ON or OFF  
+    while(1)
+    {
+        if(activity1_LED()==1) //Check if both the switches are pressed
         {
-            value = Activity2(0);   //Read ADC Channel-0
+           
+            TurnLED_ON();//Turn LED ON
+            temp=activity2_GetADC(); //Get the ADC value
+            activity3_PWM(temp); //PWM output based on temperature
+		    activity4_USARTWrite(temp); //To Serial monitor to print Temperature
+            
 
-            Activity3(value);
-            Activity4(value);
+        }
+        else  //in all other cases
+        {
+            TurnLED_OFF();//Turn LED OFF
+		    _delay_ms(200);
         }
 
-        else
-        OCR0A = 0x00;
     }
     return 0;
 }
