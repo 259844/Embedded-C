@@ -8,33 +8,37 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include<avr/io.h>
-#include"../inc/Activity1.h"
+#include "activity1.h"
 
-#define LED_ON  PORTD |= (1<<PD3)
-#define LED_OFF PORTD &= ~(1<<PD3)
 
-/**
- * @brief Port Initialization as input or output as well switch on LED if Passenger and Heater switch is on
- * 
- */
-void Activity1()
+void peripheral_init(void)
+{	
+	DDRD |= (1<<PD2); // set PD2=1 for LED
+    DDRD &= ~(1<<PD0); //clear bit
+    PORTD |= (1<<PD0); //set bit PD0 for SeatSwitch
+    DDRD &= ~(1<<PD1); //clear bit
+    PORTD |= (1<<PD1); //set bit PD0 for HeaterSwitch
+}
+
+void TurnLED_ON(){
+    LED_PORT |= (1<<LED_PIN); 
+}
+
+void TurnLED_OFF(){
+    LED_PORT &= ~(1<<LED_PIN);
+}
+
+int act1=0;
+int activity1_LED(void)
 {
-    DDRD &= ~(1<<PD2); //input pin Port D pin 2 (clear bit)
-    DDRD &= ~(1<<PD4);  //input pin Port D pin 4 (clear bit)
-
-    PORTD |= (1<<PD2);  //set bit
-    PORTD |= (1<<PD4);  //set bit
-
-    DDRD |= (1<<PD3);   //output pin Port D pin 3(set bit)
-
-   if ((!(PIND & (1<<PD2))) & (!(PIND & (1<<PD4))))
-    {
-        LED_ON;  //TURN ON LED
-    }
-
-    else
-    {
-        LED_OFF; //TURN OFF LED
-    }
+       peripheral_init();
+        if(!(PIND&(1<<BUTTON_SENSOR )) && !(PIND&(1<<TEMP_SENSOR))) //both the switches are pressed
+        { 
+            act1=1;
+        }
+        else  //in all other cases
+        {
+            act1=0;
+        }
+    return act1;
 }
