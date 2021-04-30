@@ -5,36 +5,30 @@
  * @brief Initializes ADC Channels and its Registers
  * 
  */
-void ADC_init()
+#include "activity2.h"
+
+void InitADC()
 {
-    //    DDRA = 0x0;			/* Make ADC port as input */
-	ADCSRA = 0x87;			/* Enable ADC, fr/128  */
-	ADMUX = 0x40;			/* Vref: Avcc, ADC channel: 0 */
+    ADMUX=(1<<REFS0);
+    ADCSRA= (1<<ADEN)|(7<<ADPS0);
 }
 
-/**
- * @brief Activity-2 To take data from temperature sensor through ADC channel
- * 
- * @param channel 
- * @return int 
- */
-int Activity2(char channel)
+uint16_t ReadADC(uint8_t ch)
 {
-	uint8_t Ain_High=0, Ain_Low=0;
-	uint16_t Ain=0;
+    ADMUX&=0xf8;
+    ch=ch&0b00000111;
+    ADMUX|=ch;
 
-	ADC_init();
-
-	ADMUX = ADMUX|(channel & 0x0F);	/* Set input channel to read */
-
-	ADCSRA |= (1<<ADSC);		/* Start conversion */
-	while((ADCSRA&(1<<ADIF))==0);	/* Monitor end of conversion interrupt */
-
-	//_delay_us(10);
-	Ain_Low = (int)ADCL;		/* Read lower byte*/
-	Ain_High = (int)ADCH;		/* Read higher 2 bits and
-					Multiply with weight */
-	Ain = (Ain_High*256) + Ain_Low;
-	return(Ain);			/* Return digital value*/
+    ADCSRA|=(1<<ADSC);
+    while(!(ADCSRA & (1<<ADIF)));
+    ADCSRA|=(1<<ADIF);
+    return(ADC);
 }
 
+uint16_t activity2_GetADC(void)
+{
+      InitADC();
+      uint16_t temp;
+      temp=ReadADC(0);
+      return temp;
+}
